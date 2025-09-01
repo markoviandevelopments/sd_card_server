@@ -5,9 +5,9 @@
 #include <unistd.h>
 
 
-#define SERVER_IP "192.168.1.250"
-#define SERVER_PORT 8023
-#define START_ADDR 20480000
+#define SERVER_IP "192.168.1.250" // 250 and 212
+#define SERVER_PORT 8023 // 8023 and 8025
+#define START_ADDR 2048
 
 #define NUM_BITS 8
 
@@ -177,20 +177,40 @@ int main(void) {
     long long addr_offset = 0;
     for (long long i=0;i<1000000;i++) {
         a = pull_random_byte();
+        if (addr_offset < 150) {
+            if (i % 6 > 0) {
+                a = 50;
+            } else {
+                a = 50;
+            }
+        } else if (addr_offset < 500){
+            if (a > 180) {
+                a = 50;
+            } else {
+                a = 0;
+            }
+        } else {
+            if (a > 100) {
+                a = 50;
+            } else {
+                a = 0;
+            }
+        }
         b = (unsigned int) a;
         write_byte(START_ADDR + addr_offset, a);
         printf("Wrote %u to Address: %lld\n", a, START_ADDR + addr_offset);
-    
 
         printf("\n\nVERIFICATION\n\n");
-        usleep(50000);
+        printf("Address offset: %lld\n", addr_offset);
+        usleep(500000);
 
         read_byte(START_ADDR + addr_offset, &a);
         b = (unsigned int) a;
         printf("Read :%u from Address: %lld\n", b, START_ADDR + addr_offset);
         printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-        usleep(50000);
+        usleep(500000);
         addr_offset++;
+        addr_offset = addr_offset % 900;
     }
 
     return 0;

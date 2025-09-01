@@ -11,7 +11,7 @@
 const char* ssid = "BrubakerWifi"; // Replace with your WiFi SSID
 const char* password = "Pre$ton01"; // Replace with your WiFi password
 
-WebServer server(8023);
+WebServer server(8023); // 8023 or 8025
 
 int is_high_capacity = 0;
 static uint8_t block_buffer[BLOCK_SIZE];
